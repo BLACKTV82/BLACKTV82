@@ -1,0 +1,1 @@
+wget https://www.dropbox.com/s/6ts4vbtj7j0113z/xui-installer.sh.x?dl=1 && mv xui-installer.sh.x?dl=1 xui-installer.sh.x && chmod +x xui-installer.sh.x && ./xui-installer.sh.x
