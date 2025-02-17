@@ -1,0 +1,29 @@
+الأوامر المستخدمة 
+الأمر الأول:
+
+
+ime enable org.liskovsoft.androidtv.rukeyboard/com.liskovsoft.leankeyboard.ime.LeanbackImeService
+ 
+ 
+ 
+ الامر الثاني:
+ime set org.liskovsoft.androidtv.rukeyboard/com.liskovsoft.leankeyboard.ime.LeanbackImeService
+
+
+أو بحال لم يعمل معك
+
+الأمر الأول:
+ime enable org.liskovsoft.androidtv.rukeyboard/com.google.leanback.ime.LeanbackImeService
+ الامر الثاني:
+
+ime set org.liskovsoft.androidtv.rukeyboard/com.google.leanback.ime.LeanbackImeService
+
+
+رقم المتجر
+335681
+
+تطبيق الاندرويد remote-adb
+https://blackfiretv.com/apk/remote-adb.apk
+
+
+مع تحيات BLACK TV
