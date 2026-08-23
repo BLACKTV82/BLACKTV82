@@ -1,1 +1,7 @@
-https://dmi-live-a.akamaized.net/Content/Channel/dubaizaman/DASH/master.mpd?hdntl=exp=1787612055~acl=%2f*~data=hdntl~hmac=fdc8fbc9943b1a0c97b3ed2c4880fc9236205106bbf4c88f55856584f4ab162c" -c copy -f hls -hls_time 6 -hls_list_size 6 -hls_flags delete_segments output.m3u8
+ffmpeg -i "https://dmi-live-a.akamaized.net/Content/Channel/dubaizaman/DASH/master.mpd?hdntl=exp=1787612055~acl=%2f*~data=hdntl~hmac=fdc8fbc9943b1a0c97b3ed2c4880fc9236205106bbf4c88f55856584f4ab162c" \
+-c copy \
+-f hls \
+-hls_time 6 \
+-hls_list_size 6 \
+-hls_flags delete_segments \
+output.m3u8
