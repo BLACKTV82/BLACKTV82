@@ -1,0 +1,1513 @@
+/*(function(){if(window.fetch.toString().indexOf('[native code]')===-1||XMLHttpRequest.prototype.open.toString().indexOf('[native code]')===-1){document.body.innerHTML="";window.location.replace("about:blank");return;}})();*/
+document.addEventListener("keydown", function(a) {
+    "F12" === a.key && (location.href = "/")
+}, !1);
+function fetchDecryptedStream(d, c) {
+    const b = new XMLHttpRequest();
+    b.open("POST", embed_result, true);
+    b.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let csrfToken = null;
+    const a = document.querySelector('meta[name="csrf-token"]');
+    if (a) {
+        csrfToken = a.getAttribute("content")
+    }
+    b.onreadystatechange = function() {
+        if (b.readyState === 4) {
+            if (b.status === 200) {
+                try {
+                    const g = JSON.parse(b.responseText);
+                    if (g.error) {
+                        document.getElementById("player").innerHTML = '<div style="color:white; padding:20px; text-align:center;">Error: ' + g.error + "</div>";
+                        return
+                    }
+                    const f = my_crypt_new(g.link_4, g.key, g.iv);
+                    c(f)
+                } catch (h) {
+                    document.getElementById("player").innerHTML = '<div style="color:white; padding:20px; text-align:center;">Parsing error: ' + h + "</div>"
+                }
+            } else {
+                document.getElementById("player").innerHTML = '<div style="color:white; padding:20px; text-align:center;">Request failed with status: ' + b.status + "</div>"
+            }
+        }
+    }
+    ;
+    b.send("id=" + encodeURIComponent(d) + "&csrf_token=" + encodeURIComponent(csrfToken))
+}
+;var unsand = function() {
+    $("#player").html('<div style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none" ><div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background-color:#333;color:#fff;padding:20px;border-radius:10px;text-align:center;font-size:16px;z-index:1000;box-shadow:0 4px 8px rgba(0,0,0,0.2)">Remove sandbox attributes on the iframe tag</div></div>');
+    $(document).off("click", "*")
+};
+function unsandbox_alt() {
+    setTimeout(function() {
+        const a = /iPad|iPhone|iPod/.test(navigator.platform) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1
+          , b = /Edge/.test(navigator.userAgent);
+        a || b || $("#player").append('<object data="data:application/pdf;base64,aG1t" width="1px" height="1px" style="position:absolute;top:-500px;left:-500px;visibility:hidden;" onerror="unsand(); $(this).remove()"></object>')
+    }, 1E4)
+}
+;function unsandbox() {
+    const f = window.frameElement;
+    if (f && f.hasAttribute('sandbox')) {
+        const s = f.getAttribute('sandbox');
+        if (s.includes("allow-forms") && s.includes("allow-same-origin") && s.includes("allow-scripts")) {
+            const p = document.getElementById('player');
+            if (p) {
+                const o = document.createElement('div');
+                o.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:99999;display:flex;align-items:center;justify-content:center;pointer-events:none;";
+                const m = document.createElement('div');
+                m.style.cssText = "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#333;color:#fff;padding:20px;border-radius:10px;text-align:center;font-size:16px;z-index:100000;box-shadow:0 4px 8px rgba(0,0,0,.2)";
+                m.textContent = "Remove sandbox attributes on the iframe tag";
+                o.appendChild(m);
+                p.appendChild(o);
+            }
+        }
+    }
+}
+var telegramModule = {
+    hint: "Join Us on Telegram",
+    svg: "/images/telegram-icon.svg",
+    svgHover: "/images/telegram-icon-hover.svg",
+    callback: function() {
+        rmp.pause();
+        window.open("https://t.me/elahmad_tv_apk", "_blank")
+    }
+};
+var jquery_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+  , mobile_js = "https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"
+  , crypto_js = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
+  , video_min_js = "https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.1/video.min.js"
+  , videojs_hotkeys_js = "https://cdnjs.cloudflare.com/ajax/libs/videojs-hotkeys/0.2.27/videojs.hotkeys.min.js"
+  , videojs_fullscreen_js = "https://cdn.jsdelivr.net/npm/videojs-landscape-fullscreen@11.1111.0/dist/videojs-landscape-fullscreen.min.js"
+  , videojs_pip_js = "https://players.brightcove.net/videojs-pip/1/videojs-pip.min.js"
+  , videojs_plugin_js = "/tv/embed/cloudflare/videojs_plugin.js?v=4.9"
+  , videojs_airplay = "/tv/embed/cloudflare/plugins/videojs.airplay.js"
+  , videojs_hlsjs = "https://cdn.streamroot.io/videojs-hlsjs-plugin/1/stable/videojs-hlsjs-plugin.js"
+  , cloudflare_css = "/tv/embed/cloudflare/cloudflare.css?v=4.9"
+  , plyr_css = "https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.css"
+  , plyr_js = "https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.js"
+  , mpegts_js = "https://xqq.im/mpegts.js/dist/mpegts.js?v=1.7.0"
+  , dplayer_js = "https://cdnjs.cloudflare.com/ajax/libs/dplayer/1.27.1/DPlayer.min.js"
+  , isChrome = !!window.chrome && !!window.chrome.webstore
+  , isOpera = !!window.opr && !!opr.addons || !!window.opera || 0 <= navigator.userAgent.indexOf(" OPR/")
+  , isIE11 = !!window.MSInputMethodContext && !!document.documentMode
+  , isFirefox = "undefined" !== typeof InstallTrigger
+  , radiant_js = isChrome || isOpera || isIE11 || isFirefox ? "/tv/embed/radiant/is/rm.min.js?v=3.4" : "/tv/embed/radiant/releases/js/rm.min.js?v=10.7.8"
+  , ad_blocker = '<div style="background-color:rgba(0,0,0,0.5);important;height:100%;width:100%"><div style="position:absolute;left:10%;width:80%;top:50%;height:auto;color:#fff;font-size:16px;text-align:center;background:#212121;padding:12px;border:1px solid #fff;-webkit-box-shadow:0 3px 8px rgba(0,0,0,.4);-moz-box-shadow:0 3px 8px rgba(0,0,0,.4);box-shadow:0 3px 8px rgba(0,0,0,.4);-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);transform:translateY(-50%)">Ad-blocker detected. To view this content please disable your ad-blocker.</div></div>';
+function $_GET(a) {
+    var d = location.search.indexOf("?" + a + "=");
+    if (0 > d && (d = location.search.indexOf("$" + a + "=")),
+    0 > d)
+        return "alarabiya_alhadath1";
+    d += a.length + 2;
+    0 > (a = location.search.indexOf("$", d) - 1) && (a = location.search.length);
+    for (var e = ""; d <= a; d++) {
+        var f = location.search.charAt(d);
+        e += "+" == f ? " " : f
+    }
+    return unescape(e)
+}
+var stream = decodeURI($_GET("id"));
+function loadScripts(a, d) {
+    var e = function(f, g) {
+        var h = document.createElement("script");
+        h.src = f;
+        h.charset = "UTF-8";
+        h.onload = h.onreadystatechange = function() {
+            h.onreadystatechange = h.onload = null;
+            g()
+        }
+        ;
+        (document.getElementsByTagName("script")[0] || document.getElementsByTagName("head")[0] || document.body).appendChild(h)
+    };
+    (function g() {
+        0 != a.length ? e(a.shift(), g) : d && d()
+    }
+    )()
+}
+function titlet(a) {
+    tit = a.replace(/_/g, " ").replace(/_1/g, " 1").replace(/_2/g, " 2").replace(/_3/g, " 3");
+    document.title = document.title + " " + tit
+}
+var base64 = function(a) {
+    var d, e, f = {}, g = 0, h = 0, l = "", k = String.fromCharCode, m = a.length;
+    for (d = 0; 64 > d; d++)
+        f["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(d)] = d;
+    for (d = 0; d < m; d++)
+        for (g = (g << 6) + f[a.charAt(d)],
+        h += 6; 8 <= h; )
+            ((e = g >>> (h -= 8) & 255) || d < m - 2) && (l += k(e));
+    return l
+};
+function getType(a) {
+    var d = /^rtmp:\/\//
+      , e = /\.(php|m3u8)/i
+      , f = /\.(mp4|m4p|m4v|mov)/i
+      , g = /\.f4m/
+      , h = /\.mpd/
+      , l = /\.flv/
+      , k = /\.webm|.mkv/
+      , m = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&\?]*).;*/
+      , n = /\.?dailymotion.com/
+      , p = /\.?vimeo.com/
+      , q = /\.ogg/;
+    return /\.(mp3|m4a)/i.test(a) ? "audio/mpeg" : d.test(a) ? "rtmp/mp4" : e.test(a) ? "application/x-mpegURL" : f.test(a) ? "video/mp4" : g.test(a) ? "application/adobe-f4m" : h.test(a) ? "application/dash+xml" : l.test(a) ? "video/flv" : k.test(a) ? "video/webm" : q.test(a) ? "video/ogg" : m.test(a) ? "video/youtube" : n.test(a) ? "video/dailymotion" : p.test(a) ? "video/vimeo" : "application/x-mpegURL"
+}
+var ref = document.referrer.toLowerCase();
+var water_mark = (ref.indexOf("elahmad.ru") > -1 || ref.indexOf("elahmad.site") > -1) ? "" : "/images/add_elahmad.png";
+zoekstring = document.location.href;
+function my_crypt_new(g, b, f) {
+    var e = CryptoJS.enc.Base64.parse(g)
+      , d = CryptoJS.enc.Hex.parse(b)
+      , c = CryptoJS.enc.Hex.parse(f)
+      , a = CryptoJS.AES.decrypt({
+        ciphertext: e
+    }, d, {
+        iv: c,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    })
+      , dec = a.toString(CryptoJS.enc.Utf8) || ''
+      , tok = ''
+      , qi = dec.indexOf('?');
+    if (qi !== -1)
+        tok = dec.substring(qi + 1);
+    if (tok) {
+        var o = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(m, u) {
+            try {
+                if (typeof u === 'string' && u.indexOf('easybroadcast.io') !== -1) {
+                    var n = u;
+                    if (n.indexOf('playlist_dvr.m3u8') !== -1)
+                        n = n + (n.indexOf('?') !== -1 ? '&' : '?') + tok;
+                    else if (n.indexOf('chunks_dvr.m3u8') !== -1)
+                        n = n + (n.indexOf('?') !== -1 ? '&' : '?') + tok;
+                    var args = [].slice.call(arguments);
+                    args[1] = n;
+                    return o.apply(this, args)
+                }
+            } catch (e) {}
+            return o.apply(this, arguments)
+        }
+        ;
+        var ft = window.fetch;
+        window.fetch = function(u, opt) {
+            try {
+                var fu = u instanceof Request ? u.url : u;
+                if (typeof fu === 'string' && fu.indexOf('easybroadcast.io') !== -1 && (fu.indexOf('.m3u8') !== -1 || fu.indexOf('.ts') !== -1)) {
+                    var nu = fu + (fu.indexOf('?') !== -1 ? '&' : '?') + tok;
+                    return u instanceof Request ? ft.call(window, new Request(nu,u), opt) : ft.call(window, nu, opt)
+                }
+            } catch (e) {}
+            return ft.apply(window, arguments)
+        }
+    }
+    return dec
+}
+function my_crypt(a, d, e) {
+    d = CryptoJS.enc.Utf8.parse(d);
+    e = CryptoJS.enc.Utf8.parse(e);
+    a = CryptoJS.AES.decrypt(a, d, {
+        iv: e
+    });
+    return CryptoJS.enc.Utf8.stringify(a)
+}
+function someFunction(a, d, e) {
+    var link = document.createElement("link");
+    link.href = cloudflare_css;
+    link.rel = "stylesheet";
+    document.body.appendChild(link);
+    var videoHTML = "<video id='div_player' height='100%' width='100%' style='width:100%;height:100%' class='video-js vjs-default-skin vjs-big-play-centered vjs-16-9 videoCentered' controls preload='auto' playsinline><source src='" + d + "' type='" + e + "'></video>";
+    var wrapper = document.createElement("div");
+    wrapper.innerHTML = videoHTML;
+    var videoElement = wrapper.firstChild;
+    document.getElementById("player").appendChild(videoElement);
+    loadScripts([video_min_js, videojs_plugin_js, videojs_hotkeys_js], function() {
+        var enableLiveUI = !(videojs.browser.IS_ANDROID || videojs.browser.IS_IOS);
+        videojs.options.liveui = enableLiveUI;
+        var player = videojs("div_player", {
+            controls: true,
+            preload: "auto",
+            width: "100%",
+            height: "100%",
+            sources: [{
+                src: d,
+                type: e
+            }],
+            html5: {
+                nativeAudioTracks: false,
+                nativeVideoTracks: false
+            },
+            fluid: true
+        }, function() {
+            player.elahmad({
+                related: [{
+                    thumb: "/tv/images/livetv_logo.png",
+                    url: "/tv/arabic-live-channels.php",
+                    title: "Web tv",
+                    duration: ""
+                }, {
+                    thumb: "/tv/images/livetv_logo.png",
+                    url: "/tv/mobile-live-stream/",
+                    title: "Mobile tv",
+                    duration: ""
+                }],
+                logo: water_mark,
+                logourl: "https://www.elahmad.ru",
+                logoposition: "RT",
+                rateMenu: false,
+                target: "_blank"
+            });
+            player.on("error", function() {
+                setTimeout(function() {
+                    window.location.reload();
+                }, 3000);
+            });
+            player.hotkeys({
+                volumeStep: 0.1,
+                seekStep: 5,
+                alwaysCaptureHotkeys: true
+            });
+            setTimeout(function() {
+                player.play();
+            }, 1000);
+        });
+    });
+}
+function video_js() {
+    fetchDecryptedStream(stream, function(url) {
+        var type = getType(url);
+        someFunction(null, url, type);
+    });
+}
+function load_css(a) {
+    var d = document.getElementsByTagName("head")[0]
+      , e = document.createElement("link");
+    e.rel = "stylesheet";
+    e.type = "text/css";
+    e.href = a;
+    e.media = "all";
+    d.appendChild(e)
+}
+function load_videojs(a) {
+    load_css(cloudflare_css);
+    var d = getType(a);
+    playerText = "<video id='fcplayer' width='100%' height='100%' class='video-js vjs-default-skin vjs-big-play-centered videoCentered' style='position: absolute; left: 0; top:0; width:100%;height:100%;' autoplay playsinline controls><source src='" + a + "' type='" + d + "'></source></video>";
+    c = document.createElement("div");
+    c.innerHTML = playerText;
+    (function(e, f) {
+        document.getElementById(e).appendChild(f)
+    }
+    )("player", c.firstChild);
+    (function(e, f) {
+        var g = function(h, l) {
+            var k = document.createElement("script");
+            k.src = h;
+            k.onload = k.onreadystatechange = function() {
+                k.onreadystatechange = k.onload = null;
+                l()
+            }
+            ;
+            (document.getElementsByTagName("head")[0] || document.body).appendChild(k)
+        };
+        (function l() {
+            0 != e.length ? g(e.shift(), l) : f && f()
+        }
+        )()
+    }
+    )([video_min_js, videojs_plugin_js, videojs_fullscreen_js, videojs_hotkeys_js, videojs_pip_js, mobile_js, videojs_airplay], function() {
+        function e() {
+            document.querySelectorAll(".btn-unmute").forEach(function(k) {
+                return k.style.display = "none"
+            });
+            g.play();
+            g.muted(!1)
+        }
+        var f = new MobileDetect(window.navigator.userAgent)
+          , g = videojs("fcplayer", {
+            controls: !0,
+            autoplay: !0,
+            preload: "auto",
+            width: "100%",
+            height: "100%",
+            html5: {
+                hls: {
+                    overrideNative: !0
+                },
+                nativeAudioTracks: !1,
+                nativeVideoTracks: !1
+            },
+            sources: [{
+                type: d,
+                src: a
+            }]
+        });
+        g.on("play", function() {
+            e()
+        });
+        load_css("https://fonts.googleapis.com/icon?family=Material+Icons");
+        var h = document.getElementsByTagName("body")[0]
+          , l = document.createElement("div");
+        l.className = "btn-unmute";
+        l.style.cssText = "text-align:center;background:#222321;z-index:3;color:#fff;position:absolute;top:60px;left:60px;width:200px;border:2px solid #fff;padding:4px 0;border-radius:2px;cursor:pointer;opacity:.8";
+        l.innerHTML = ' <div class="unmuteInfo" title="Play Video" id="btn-unmute" >CLICK HERE TO UNMUTE <i class="material-icons" style="font-size:48px;color:red">volume_off</i><i class="material-icons" style="font-size:48px;color:red">play_arrow</i></div>';
+        h.appendChild(l);
+        l.querySelectorAll(".unmuteInfo")[0].onclick = function() {
+            e();
+            l.style.display = "none";
+            return !1
+        }
+        ;
+        g.elahmad({});
+        g.airplay();
+        g.landscapeFullscreen();
+        g.hotkeys({
+            volumeStep: .1,
+            seekStep: 5,
+            alwaysCaptureHotkeys: !0
+        });
+        g.pip({
+            allowOnMobile: !0
+        });
+        g.on("error", function(k) {
+            f.mobile() ? mobile_new(a) : extension(a)
+        })
+    })
+}
+function load_videojs_v7(g) {
+    load_css("/tv/embed/cloudflare/cloudflare_v7.css?v=v7.0");
+    var k = getType(g);
+    playerText = "<video id='fcplayer' width='100%' height='100%' class='video-js vjs-default-skin vjs-big-play-centered videoCentered' style='position: absolute; left: 0; top:0; width:100%;height:100%;' autoplay playsinline controls><source src='" + g + "' type='" + k + "'></source></video>";
+    c = document.createElement("div");
+    c.innerHTML = playerText;
+    (function(e, f) {
+        document.getElementById(e).appendChild(f)
+    }
+    )("player", c.firstChild);
+    (function(e, f) {
+        var a = function(h, b) {
+            var d = document.createElement("script");
+            d.src = h;
+            d.onload = d.onreadystatechange = function() {
+                d.onreadystatechange = d.onload = null;
+                b()
+            }
+            ;
+            (document.getElementsByTagName("head")[0] || document.body).appendChild(d)
+        };
+        (function b() {
+            0 != e.length ? a(e.shift(), b) : f && f()
+        }
+        )()
+    }
+    )(["https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.0/video.min.js", "/tv/embed/cloudflare/videojs_plugin_v7.js?v=v7.0", videojs_fullscreen_js, videojs_hotkeys_js, videojs_pip_js, mobile_js, videojs_airplay], function() {
+        function e() {
+            document.querySelectorAll(".btn-unmute").forEach(function(d) {
+                return d.style.display = "none"
+            });
+            a.play();
+            a.muted(!1)
+        }
+        var f = new MobileDetect(window.navigator.userAgent)
+          , a = videojs("fcplayer", {
+            controls: !0,
+            autoplay: !0,
+            preload: "auto",
+            width: "100%",
+            height: "100%",
+            html5: {
+                hls: {
+                    overrideNative: !0
+                },
+                nativeAudioTracks: !1,
+                nativeVideoTracks: !1
+            },
+            sources: [{
+                type: k,
+                src: g
+            }]
+        });
+        a.on("play", function() {
+            e()
+        });
+        load_css("https://fonts.googleapis.com/icon?family=Material+Icons");
+        var h = document.getElementsByTagName("body")[0]
+          , b = document.createElement("div");
+        b.className = "btn-unmute";
+        b.style.cssText = "text-align:center;background:#222321;z-index:3;color:#fff;position:absolute;top:60px;left:60px;width:200px;border:2px solid #fff;padding:4px 0;border-radius:2px;cursor:pointer;opacity:.8";
+        b.innerHTML = ' <div class="unmuteInfo" title="Play Video" id="btn-unmute" >CLICK HERE TO UNMUTE <i class="material-icons" style="font-size:48px;color:red">volume_off</i><i class="material-icons" style="font-size:48px;color:red">play_arrow</i></div>';
+        h.appendChild(b);
+        b.querySelectorAll(".unmuteInfo")[0].onclick = function() {
+            e();
+            b.style.display = "none";
+            return !1
+        }
+        ;
+        a.elahmad({});
+        a.airplay();
+        a.landscapeFullscreen();
+        a.hotkeys({
+            volumeStep: .1,
+            seekStep: 5,
+            alwaysCaptureHotkeys: !0
+        });
+        a.pip({
+            allowOnMobile: !0
+        });
+        a.on("error", function(d) {
+            f.mobile() ? mobile_new(g) : extension(g)
+        })
+    })
+}
+;function algerie(a) {
+    $.ajax({
+        type: "POST",
+        url: "/tv/result/algerie_result.php",
+        data: a + "=1",
+        dataType: "json",
+        success: function(d) {
+            tv = d[0];
+            rtsp = d[1];
+            var e = getType(tv);
+            return $.get(rtsp, {}, function(f) {
+                someFunction(d, tv + f, e)
+            }, "html"),
+            d
+        },
+        error: function() {
+            alert("Error occured")
+        }
+    })
+}
+function itworks(a) {
+    loadScripts(["/tv/videojs/packages/player.js?v=elahmad_24"], function() {
+        $.ajax({
+            type: "POST",
+            url: "/tv/result/itworks_result.php",
+            data: a + "=1",
+            dataType: "json",
+            success: function(d) {
+                return tv = d[0],
+                rtsp = d[1],
+                getType(tv),
+                elahmad_player("player", {
+                    width: "100%",
+                    height: "100%",
+                    autostart: !0,
+                    sources: [{
+                        file: tv
+                    }],
+                    advertising: {}
+                }),
+                d
+            },
+            error: function() {
+                alert("Error occured")
+            }
+        })
+    })
+}
+function clappr() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        clappr_new(url);
+    });
+}
+function clappr_new(a) {
+    var d = document.createElement("link");
+    d.href = "/tv/embed/clappr/embed.min.css?v=0.24";
+    d.rel = "stylesheet";
+    document.body.appendChild(d);
+    loadScripts(["https://cdnjs.cloudflare.com/ajax/libs/clappr/0.4.7/clappr.min.js", "https://cdnjs.cloudflare.com/ajax/libs/dash-shaka-playback/2.0.5/dash-shaka-playback.js", "https://cdn.jsdelivr.net/gh/clappr/clappr-level-selector-plugin@latest/dist/level-selector.min.js", "https://cdn.jsdelivr.net/npm/clappr-pip@latest/dist/clappr-pip.min.js"], function() {
+        b = getType(a);
+        player = new Clappr.Player({
+            source: a,
+            maxBufferLength: 30,
+            hlsjsConfig: {
+                maxBufferLength: 30
+            },
+            playback: {
+                debug: !0
+            },
+            disableVideoTagContextMenu: !1,
+            parentId: "#player",
+            preload: "auto",
+            autoPlay: "true",
+            plugins: [LevelSelector, Clappr.HLS, DashShakaPlayback, ClapprPip.PipButton, ClapprPip.PipPlugin],
+            mimeType: b,
+            language: "pt-en",
+            mediacontrol: {
+                seekbar: "#00f5ff",
+                buttons: "#00f5ff"
+            },
+            width: "100%",
+            height: "100%",
+            events: {
+                onError: function(e) {
+                    extension(a)
+                }
+            }
+        });
+        setTimeout(function() {
+            player.play()
+        }, 3E3)
+    })
+}
+function radiant() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        radiant_new(url);
+    });
+}
+function sldpplayer() {
+    fetchDecryptedStream(stream, function(url) {
+        sldp_player(url);
+    });
+}
+function sldp_player(url) {
+    loadScripts(["https://softvelum.com/player/releases/sldp-v2.24.0.min.js"], function() {
+        const sldpPlayer = SLDP.init({
+            container: "player",
+            stream_url: url,
+            adaptive_bitrate: {
+                initial_rendition: "240p"
+            },
+            autoplay: true,
+            width: "100%",
+            height: "100%"
+        });
+        console.log("SLDP player initialized with:", url);
+    });
+}
+function bitmovin() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        bitmovin_player(url);
+    });
+}
+function bitmovin_player(url) {
+    const originalOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+        let target = arguments[1];
+        if (target.includes("licensing.bitmovin.com")) {
+            arguments[1] = "data:text/plain;charset=utf-8;base64," + btoa(JSON.stringify({
+                status: "granted",
+                message: "There you go."
+            }));
+        }
+        return originalOpen.apply(this, arguments);
+    }
+    ;
+    loadScripts(["https://cdn.jsdelivr.net/npm/bitmovin-player@7.8.25/bitmovinplayer.min.js"], function() {
+        let sourceConfig;
+        if (url.match(/\.(ogg|m4a|mp3|webm|ogv|mkv|mp4)$/i)) {
+            sourceConfig = {
+                progressive: url
+            };
+        } else if (url.includes(".m3u8") || url.includes(".php")) {
+            sourceConfig = {
+                hls: url
+            };
+        } else if (url.includes(".ism/manifest")) {
+            sourceConfig = {
+                smooth: url
+            };
+        } else if (url.includes(".mpd")) {
+            sourceConfig = {
+                dash: url
+            };
+        } else {
+            sourceConfig = {
+                hls: url
+            };
+        }
+        const config = {
+            key: "11d3698c-efdf-42f1-8769-54663995de2b",
+            cast: {
+                enable: false
+            },
+            source: sourceConfig,
+            playback: {
+                autoplay: true,
+                muted: false
+            }
+        };
+        const player = bitmovin.player("player");
+        player.addEventHandler(bitmovin.player.EVENT.ON_PLAYBACK_FINISHED, function() {
+            document.location.reload(true);
+        });
+        player.setup(config).then(function() {
+            console.log("Bitmovin player initialized successfully.");
+        }).catch(function() {
+            extension(url);
+        });
+    }, function() {
+        alert("Error loading Bitmovin script");
+    });
+}
+function jw7() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        jw7player(url)
+    });
+}
+function jw7player(a) {
+    loadScripts(["//ssl.p.jwpcdn.com/player/v/7.12.13/jwplayer.js"], function() {
+        var d = {
+            code: encodeURI('<iframe src="' + zoekstring + '" width="560" height="315" frameborder="0" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" style="border:none;" allowfullscreen allow="autoplay; fullscreen"></iframe>'),
+            link: "" + zoekstring,
+            sites: "facebook twitter email pinterest tumblr googleplus reddit linkedin custom".split(" ")
+        }
+          , e = jwplayer("player");
+        e.setup({
+            key: "WbtWzGvcRNi6Tk+gtKldIbx+nn6lXZFvKiaO2g==",
+            playlist: [{
+                file: a,
+                type: "hls"
+            }],
+            type: "m3u8",
+            allowfullscreen: "true",
+            height: "100%",
+            width: "100%",
+            androidhls: !0,
+            hlshtml: !0,
+            hls: "true",
+            flashplayer: "//ssl.p.jwpcdn.com/player/v/7.12.13/jwplayer.flash.swf",
+            aboutlink: "https://www.elahmad.ru",
+            abouttext: "elahmad.ru",
+            logo: {
+                file: water_mark,
+                link: "https://www.elahmad.ru",
+                hide: "true",
+                position: "top-left"
+            },
+            sharing: d,
+            autostart: !0
+        });
+        e.on("error", function() {
+            extension(a)
+        })
+    })
+}
+function jw8() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        jw8player(url);
+    });
+}
+function jw8player(a) {
+    loadScripts(["//ssl.p.jwpcdn.com/player/v/8.40.0/jwplayer.js"/*,"/tv/embed/jwplayer/hls.js"*/
+    ], function() {
+        var d = {
+            code: encodeURI('<iframe src="' + zoekstring + '" width="560" height="315" frameborder="0" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" style="border:none;" allowfullscreen allow="autoplay; fullscreen"></iframe>'),
+            link: "" + zoekstring,
+            sites: "facebook twitter email pinterest tumblr googleplus reddit linkedin custom".split(" ")
+        };
+        jwplayer("player").setup({
+            key: "QybHxeEatECB7VWGt/y7fw69lOha2N4x3Es4kNK1RhDAmYzB",
+            playlist: [{
+                file: a,
+                type: "hls"
+            }],
+            type: "m3u8",
+            allowfullscreen: "true",
+            height: "100%",
+            width: "100%",
+            androidhls: !0,
+            hlshtml: !0,
+            hls: "true",
+            primary: "html5",
+            aboutlink: "https://www.elahmad.ru",
+            abouttext: "elahmad.ru",
+            logo: {
+                file: water_mark,
+                link: "https://www.elahmad.ru",
+                hide: "true",
+                position: "top-left"
+            },
+            sharing: d,
+            autostart: !0
+        }).on("adBlock", function() {
+            document.getElementById("player").innerHTML = ad_blocker
+        })
+    })
+}
+function jw8_hls() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        jw8player_hls(url);
+    });
+}
+function jw8player_hls(a) {
+    loadScripts(["//ssl.p.jwpcdn.com/player/v/8.40.0/jwplayer.js"/*,"/tv/embed/jwplayer/hls.js"*/
+    ], function() {
+        var d = {
+            code: encodeURI('<iframe src="' + zoekstring + '" width="560" height="315" frameborder="0" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" style="border:none;" allowfullscreen allow="autoplay; fullscreen"></iframe>'),
+            link: "" + zoekstring,
+            sites: "facebook twitter email pinterest tumblr googleplus reddit linkedin custom".split(" ")
+        };
+        jwplayer("player").setup({
+            key: "QybHxeEatECB7VWGt/y7fw69lOha2N4x3Es4kNK1RhDAmYzB",
+            playlist: [{
+                file: a,
+                type: "hls"
+            }],
+            type: "m3u8",
+            allowfullscreen: "true",
+            height: "100%",
+            width: "100%",
+            androidhls: !0,
+            hlshtml: !0,
+            hls: "true",
+            primary: "html5",
+            aboutlink: "https://www.elahmad.ru",
+            abouttext: "elahmad.ru",
+            drm: {},
+            logo: {
+                file: water_mark,
+                link: "https://www.elahmad.ru",
+                hide: "true",
+                position: "top-left"
+            },
+            sharing: d,
+            autostart: !0
+        }).on("adBlock", function() {
+            document.getElementById("player").innerHTML = ad_blocker
+        })
+    })
+}
+function videojs_kw() {
+    fetchDecryptedStream(stream, function(t) {
+        videojs_player(t)
+    })
+}
+function videojs_player(t) {
+    loadScripts(["/tv/embed/kwikmotion/KwikMotion.js"], function() {
+        kwikMotion("player", {
+            autostart: !0,
+            sources: [{
+                file: t
+            }],
+            width: "100%",
+            height: "100%"
+        })
+    })
+}
+function extension(h) {
+    function k(c, a, b) {
+        var d = null;
+        c ? d = "chrome-extension://cjfbmleiaobegagekpmlhmaadepdeedn/index.html#" + b : a && (d = "chrome-extension://lcipembjfkmeggpihdpdgnjildgniffl/player.html#" + b),
+        d ? (document.getElementById("player").innerHTML = "",
+        a = document.createElement("iframe"),
+        a.src = d,
+        a.className = "videoCentered",
+        a.frameBorder = "0",
+        a.scrolling = "no",
+        a.style.width = "100%",
+        a.style.height = "100vh",
+        document.getElementById("player").appendChild(a)) : alert("Para ver este contenido, es necesario instalar HLS Player para Chrome o Edge desde el men? INFO de esta p?gina web.\n\nTo watch this content, you need to install HLS Player for Chrome or Edge from the INFO menu on this website.")
+    }
+    function l(c) {
+        var a = [!1, !1]
+          , b = [!1, !1]
+          , d = [{
+            id: "cjfbmleiaobegagekpmlhmaadepdeedn",
+            icon: "/icon128.png"
+        }, {
+            id: "lcipembjfkmeggpihdpdgnjildgniffl",
+            icon: "/icon128.png"
+        }];
+        for (var f = 0; f < d.length; f++)
+            (function(f) {
+                var e = document.createElement("iframe");
+                e.src = "chrome-extension://" + d[f].id + "/index.html",
+                e.style.display = "none",
+                e.onload = function() {
+                    a[f] = !0,
+                    b[f] = !0,
+                    b[0] && b[1] && k(a[0], a[1], c)
+                }
+                ,
+                e.onerror = function() {
+                    a[f] = !1,
+                    b[f] = !0,
+                    b[0] && b[1] && k(a[0], a[1], c)
+                }
+                ,
+                document.body.insertAdjacentHTML("beforeend", '<div class="top"><a id="addo" target="_blank" href="https://chrome.google.com/webstore/detail/reproductor-m3u8-hls-%20-da/lcipembjfkmeggpihdpdgnjildgniffl" title="Play m3u8 HLS">For this Channel use Chrome Extension: <u>HLS Player m3u8</u> to watch channels</a><img onclick="this.parentElement.style.display=\'none\'" style="position:absolute;top:10px;right:10px;margin:auto;cursor:pointer" title="Close" src="/images/icon_close_16px.gif" width="25" height="25"/></div>'),
+                document.body.appendChild(e)
+            }
+            )(f)
+    }
+    var g = navigator.userAgent;
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|CriOS/i.test(g) ? location.href = h : /Chrome|Edg/.test(g) && /Google Inc/.test(navigator.vendor) ? l(h) : (g.indexOf("Firefox") !== -1 && alert("Este contenido solo funciona en Chrome o Edge.\n\nThis content only works in Chrome or Edge."),
+    top.close());
+}
+function extension_ts(a) {
+    loadScripts([jquery_js], function() {
+        var d = new Image;
+        d.src = "chrome-extension://lcipembjfkmeggpihdpdgnjildgniffl/icon128.png";
+        $(d).on("load", function() {
+            extension2(a)
+        });
+        $(d).on("error", function() {
+            extension1(a)
+        })
+    })
+}
+function extension1(a) {
+    var d = new Image;
+    d.src = "chrome-extension://cjfbmleiaobegagekpmlhmaadepdeedn/assets/icon128.png";
+    $(d).on("load", function() {
+        $(".top").css("display", "none");
+        $("#player").html('<iframe  class="videoCentered" src="chrome-extension://cjfbmleiaobegagekpmlhmaadepdeedn/index.html#' + a + '" frameborder="0" scrolling="no" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen" allowfullscreen="true"></iframe>')
+    });
+    $(d).on("error", function() {
+        $("body").append('<div class="top"><a id="addo"  target="_blank" href="https://chrome.google.com/webstore/detail/native-mpeg-dash-%20-hls-pl/cjfbmleiaobegagekpmlhmaadepdeedn" title="Play m3u8 HLS">For this Channel use Chrome Extension: <u>HLS Player m3u8</u> to watch channels </a><img onclick="this.parentElement.style.display=\'none\'" style="position:absolute;top:10px;right:10px;margin:auto;cursor: pointer" title="Close" src="/images/icon_close_16px.gif" width="25" height="25"/></div>')
+    })
+}
+function extension2(a) {
+    var d = new Image;
+    d.src = "chrome-extension://lcipembjfkmeggpihdpdgnjildgniffl/icon128.png";
+    $(d).on("load", function() {
+        $(".top").css("display", "none");
+        $("#player").html('<iframe  class="videoCentered" src="chrome-extension://lcipembjfkmeggpihdpdgnjildgniffl/player.html#' + a + '" frameborder="0" scrolling="no" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen" allowfullscreen="true"></iframe>')
+    });
+    $(d).on("error", function() {
+        $("body").append('<div class="top"><a id="addo"  target="_blank" href="https://chrome.google.com/webstore/detail/reproductor-m3u8-hls-%20-da/lcipembjfkmeggpihdpdgnjildgniffl" title="Play m3u8 HLS">For this Channel use Chrome Extension: <u>HLS Player m3u8</u> to watch channels </a><img onclick="this.parentElement.style.display=\'none\'" style="position:absolute;top:10px;right:10px;margin:auto;cursor: pointer" title="Close" src="/images/icon_close_16px.gif" width="25" height="25"/></div>')
+    })
+}
+function mobiletv() {
+    fetchDecryptedStream(stream, function(url) {
+        var type = getType(url);
+        var videoHTML = '<video id="video" controls autoplay poster="" class="videoCentered" style="width:100%;height:100%;"><source src="' + url + '" type="' + type + '" />Your browser does not support video playback.</video>';
+        document.getElementById("player").innerHTML = videoHTML;
+    });
+}
+function mobile_new(a) {
+    document.getElementById("player").innerHTML = "";
+    var d = getType(a);
+    a = '<video id="player" controls="autoplay" poster="" controls autoplay class="videoCentered" style="position: absolute; left: 0; top:0; width:100%;height:100%;"><source src="' + a + '" type="' + d + '"/></video>';
+    d = document.createElement("div");
+    d.innerHTML = a;
+    a = d.firstChild;
+    document.getElementById("player").appendChild(a)
+}
+function radiant_hls(a) {
+    loadScripts(["/tv/embed/radiant/releases/js/rm.min.light.js"], function() {
+        var b = {
+            licenseKey: "Kl8lYWVvPTNla2Nza3YyNzk/cm9tNWRhc2lzMzBkYjBBJV8q",
+            src: {
+                hls: a
+            },
+            autoplay: !0,
+            iframeMode: !0,
+            iframeAllowed: !0,
+            isLive: !0
+        }
+          , c = new RadiantMP("player");
+        document.getElementById("player").addEventListener("error", function() {
+            setTimeout(function() {
+                window.location.reload()
+            }, 3E3)
+        });
+        c.init(b)
+    })
+}
+;function radiant_new(b) {
+    loadScripts([radiant_js], function() {
+        var g, f = false;
+        switch (true) {
+        case b.indexOf(".ogg") !== -1:
+            g = {
+                ogg: b
+            };
+            f = true;
+            break;
+        case b.indexOf(".m4a") !== -1:
+            g = {
+                m4a: b
+            };
+            f = true;
+            break;
+        case b.indexOf(".mp3") !== -1:
+            g = {
+                mp3: b
+            };
+            f = true;
+            break;
+        case b.indexOf(".webm") !== -1:
+            g = {
+                webm: b
+            };
+            break;
+        case b.indexOf(".m3u8") !== -1 || b.indexOf(".php") !== -1:
+            g = {
+                hls: b
+            };
+            break;
+        case b.indexOf(".mpd") !== -1:
+            g = {
+                dash: b
+            };
+            break;
+        case b.indexOf(".ogv") !== -1 || b.indexOf(".mkv") !== -1 || b.indexOf(".mp4") !== -1:
+            g = {
+                mp4: b
+            };
+            break;
+        default:
+            g = {
+                hls: b
+            };
+            break;
+        }
+        var randomPosition = ['topleft', 'bottomleft', 'topright', 'bottomright'][Math.floor(Math.random() * 4)];
+        var c = {
+            licenseKey: "Kl8lYWVvPTNla2Nza3YyNzk/cm9tNWRhc2lzMzBkYjBBJV8q",
+            src: g,
+            iframeMode: true,
+            iframeAllowed: true,
+            skin: "s1",
+            autoplay: true,
+            pip: true,
+            forceMseHlsOnAppleDevices: true,
+            audioOnly: f,
+            logo: {
+                imgUri: water_mark,
+                clickUri: "https://www.elahmad.ru",
+                position: randomPosition,
+                margin: "8px",
+                watermark: false,
+                pauseContentOnLogoClick: true
+            },
+            sharing: true,
+            sharingUrl: zoekstring,
+            sharingNetworks: ["facebook", "twitter", "linkedin", "reddit", "email"],
+            sharingCode: '<iframe width="560" height="315" src="' + zoekstring + '" style="border:none;" allowfullscreen allow="autoplay; fullscreen; picture-in-picture; xr-spatial-tracking; encrypted-media"></iframe>',
+            customModule: [telegramModule]
+        };
+        rmp = new RadiantMP("player");
+        var aa = document.getElementById("player");
+        aa.addEventListener("error", function() {
+            loadScripts([mobile_js], function() {
+                (new MobileDetect(window.navigator.userAgent)).mobile() || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/Tizen/i) || navigator.userAgent.match(/SmartTV/i) ? mobile_new(b) : setTimeout(function() {
+                    extension(b);
+                }, 500);
+            });
+        });
+        rmp.init(c);
+    });
+}
+function radiant_new_alt(a) {
+    loadScripts([radiant_js], function() {
+        switch (!0) {
+        case -1 != a.indexOf(".ogg"):
+            var d = {
+                ogg: a
+            }
+              , e = !0;
+            break;
+        case -1 != a.indexOf(".m4a"):
+            d = {
+                m4a: a
+            };
+            e = !0;
+            break;
+        case -1 != a.indexOf(".mp3"):
+            d = {
+                mp3: a
+            };
+            e = !0;
+            break;
+        case -1 != a.indexOf(".webm"):
+            d = {
+                webm: a
+            };
+            break;
+        case -1 != a.indexOf(".m3u8") || -1 != a.indexOf(".php"):
+            d = {
+                hls: a
+            };
+            break;
+        case -1 != a.indexOf(".mpd"):
+            d = {
+                dash: a
+            };
+            break;
+        case -1 != a.indexOf(".ogv") || -1 != a.indexOf(".mkv") || -1 != a.indexOf(".mp4"):
+            d = {
+                mp4: a
+            };
+            break;
+        default:
+            d = {
+                hls: a
+            },
+            e = !1
+        }
+        if (-1 < a.indexOf("?DVR") || -1 < a.indexOf("playlist_dvr.m3u8") || -1 < a.indexOf("playlist_DVR.m3u8"))
+            var f = !0;
+        hh = {
+            customModule: [telegramModule],
+            licenseKey: "Kl8lYWVvPTNla2Nza3YyNzk/cm9tNWRhc2lzMzBkYjBBJV8q",
+            detectViewerLanguage: !1,
+            isLiveDvr: f,
+            iframeMode: !0,
+            iframeAllowed: !0,
+            sharing: !0,
+            sharingUrl: zoekstring,
+            sharingNetworks: ["facebook", "twitter", "linkedin", "reddit", "email"],
+            sharingCode: '<iframe width="560" height="315" src="' + zoekstring + '" style="border:none;" allowfullscreen allow="autoplay; fullscreen; picture-in-picture; xr-spatial-tracking; encrypted-media"></iframe>',
+            skin: "s1",
+            src: d,
+            audioOnly: e,
+            delayToFade: 3E3,
+            pip: !0,
+            logo: water_mark,
+            logoLoc: "https://www.elahmad.ru",
+            logoPosition: "bottom",
+            logoWatermark: "false",
+            autoplay: !0,
+            hlsJSMaxBufferSize: 0,
+            hlsJSMaxBufferLength: 15,
+            hlsJSLiveSyncDuration: 5,
+            hlsJSLiveMaxLatencyDuration: Infinity,
+            forceHlsJSOnMacOSIpadOSSafari: !0,
+            adBlockerDetection: !0,
+            adBlockerDetectedPreventPlayback: !0,
+            gaTrackingId: "UA-6843551-1",
+            gaCategory: "E-learning video",
+            gaLabel: "How to start with HTML5 video",
+            gaEvents: "context ready playerstart error adimpression adloadererror aderror".split(" ")
+        };
+        rmp = new RadiantMP("player");
+        aa = document.getElementById("player");
+        aa.addEventListener("error", function() {
+            loadScripts([mobile_js], function() {
+                (new MobileDetect(window.navigator.userAgent)).mobile() || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/Tizen/i) || navigator.userAgent.match(/SmartTV/i) ? mobile_new(a) : setTimeout(function() {
+                    extension(a)
+                }, 500)
+            })
+        });
+        aa.addEventListener("ready", function() {});
+        aa.addEventListener("playing", function() {
+            rmp.setBitrate(4)
+        });
+        aa.addEventListener("warning", function() {});
+        rmp.init(hh)
+    })
+}
+function gini_player(a) {
+    loadScripts([jquery_js], function() {
+        $.ajax({
+            url: window.location.pathname,
+            type: "POST",
+            dataType: "json",
+            data: a,
+            async: !0,
+            beforeSend: function() {
+                $("#player").append('<div id="waiting"></div>')
+            },
+            success: function(d) {
+                loadScripts([mobile_js], function() {
+                    (new MobileDetect(window.navigator.userAgent)).mobile() ? mobile_new(d.link) : radiant_new(d.link)
+                })
+            },
+            complete: function() {
+                $("#waiting").hide()
+            },
+            error: function() {
+                alert("Error occured")
+            }
+        })
+    })
+}
+var $jscomp = $jscomp || {};
+$jscomp.scope = {};
+$jscomp.createTemplateTagFirstArg = function(a) {
+    return a.raw = a
+}
+;
+$jscomp.createTemplateTagFirstArgWithRaw = function(a, d) {
+    a.raw = d;
+    return a
+}
+;
+function plyr(a) {
+    if (!document.querySelector('link[href="' + plyr_css + '"]')) {
+        var l = document.createElement("link");
+        l.href = plyr_css;
+        l.rel = "stylesheet";
+        document.head.appendChild(l);
+    }
+    var type = getType(a);
+    var container = document.getElementById("player");
+    container.innerHTML = '<video id="fcplayer" width="100%" height="100%" autoplay playsinline controls><source src="' + a + '" type="' + type + '"></video>';
+    var video = document.getElementById("fcplayer");
+    var libs = [plyr_js];
+    if (type === "application/x-mpegURL")
+        libs.unshift("https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.17/hls.min.js");
+    else if (type === "application/dash+xml")
+        libs.unshift("https://cdn.dashjs.org/latest/dash.all.min.js");
+    loadScripts(libs, function() {
+        var options = {};
+        var playerInstance;
+        if (type === "application/x-mpegURL") {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(a);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    var qualities = hls.levels.map(function(l) {
+                        return l.height;
+                    }).sort(function(a, b) {
+                        return b - a;
+                    });
+                    options.quality = {
+                        default: qualities[0],
+                        options: qualities,
+                        forced: true,
+                        onChange: function(q) {
+                            hls.levels.forEach(function(l, i) {
+                                if (l.height === q)
+                                    hls.currentLevel = i;
+                            })
+                        }
+                    };
+                    playerInstance = new Plyr(video,options);
+                    video.play();
+                });
+                window.hls = hls;
+            } else {
+                playerInstance = new Plyr(video,options);
+                video.src = a;
+            }
+        } else if (type === "application/dash+xml") {
+            var dash = dashjs.MediaPlayer().create();
+            dash.initialize(video, a, true);
+            playerInstance = new Plyr(video,options);
+            window.dash = dash;
+        } else {
+            playerInstance = new Plyr(video,options);
+            video.src = a;
+        }
+        window.plyr = playerInstance;
+    });
+}
+;function plyr_player() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        plyr(url);
+    });
+}
+;function shaka_player(a) {
+    var b = "https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.16.3/controls.min.css";
+    if (!document.querySelector('link[href="' + b + '"]')) {
+        var c = document.createElement("link");
+        c.href = b;
+        c.rel = "stylesheet";
+        document.head.appendChild(c)
+    }
+    var d = document.getElementById("player");
+    if (!d)
+        return;
+    d.innerHTML = "<video id='fcplayer' width='100%' height='100%' class='videoCentered' playsinline></video>";
+    loadScripts(["https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.16.3/shaka-player.ui.min.js"], function() {
+        shaka.polyfill.installAll();
+        if (shaka.Player.isBrowserSupported()) {
+            var e = document.getElementById("fcplayer"), f;
+            function g() {
+                var h = new shaka.ui.Overlay(f,d,e);
+                h.configure({
+                    controlPanelElements: ["play_pause", "time_and_duration", "spacer", "mute", "volume", "fullscreen", "overflow_menu"],
+                    overflowMenuButtons: ["captions", "quality", "language", "picture_in_picture", "playback_rate"]
+                });
+                window.player = f;
+                f.load(a).then(function() {
+                    e.muted = !1;
+                    e.play().catch(function() {
+                        e.muted = !0;
+                        e.play()
+                    })
+                }).catch(function(i) {
+                    console.error("Error:", i)
+                });
+                e.addEventListener("dblclick", function() {
+                    if (document.fullscreenElement || document.msFullscreenElement || document.webkitFullscreenElement) {
+                        if (document.exitFullscreen)
+                            document.exitFullscreen();
+                        else if (document.msExitFullscreen)
+                            document.msExitFullscreen();
+                        else if (document.webkitExitFullscreen)
+                            document.webkitExitFullscreen()
+                    } else {
+                        if (e.requestFullscreen)
+                            e.requestFullscreen();
+                        else if (e.msRequestFullscreen)
+                            e.msRequestFullscreen();
+                        else if (e.webkitRequestFullscreen)
+                            e.webkitRequestFullscreen()
+                    }
+                })
+            }
+            typeof shaka.Player.prototype.attach === "function" ? (f = new shaka.Player(),
+            f.attach(e).then(function() {
+                g()
+            })) : (f = new shaka.Player(e),
+            g())
+        }
+    })
+}
+function shaka_play() {
+    fetchDecryptedStream(stream, function(a) {
+        shaka_player(a)
+    })
+}
+;function mpegts_no(a) {
+    var d = document.createElement("link");
+    d.href = plyr_css;
+    d.rel = "stylesheet";
+    document.body.appendChild(d);
+    tt = getType(a);
+    playerText = "<video id='fcplayer' width='100%' height='100%' class='videoCentered' autoplay playsinline controls><source src='" + a + "' type='" + tt + "'></source>";
+    d = document.createElement("div");
+    d.innerHTML = playerText;
+    (function(e, f) {
+        document.getElementById(e).appendChild(f)
+    }
+    )("player", d.firstChild);
+    (function(e, f) {
+        var g = function(h, l) {
+            var k = document.createElement("script");
+            k.src = h;
+            k.onload = k.onreadystatechange = function() {
+                k.onreadystatechange = k.onload = null;
+                l()
+            }
+            ;
+            (document.getElementsByTagName("head")[0] || document.body).appendChild(k)
+        };
+        (function l() {
+            0 != e.length ? g(e.shift(), l) : f && f()
+        }
+        )()
+    }
+    )([mpegts_js, plyr_js], function() {
+        if (mpegts.getFeatureList().mseLivePlayback) {
+            var e = document.querySelector("video")
+              , f = mpegts.createPlayer({
+                type: "mse",
+                isLive: !0,
+                url: a
+            });
+            f.attachMediaElement(e);
+            f.load();
+            f.play();
+            new Plyr(e)
+        }
+    })
+}
+function mpegts(g) {
+    var h = document.head || document.getElementsByTagName("head")[0]
+      , b = document.createElement("style");
+    h.appendChild(b);
+    b.type = "text/css";
+    b.styleSheet ? b.styleSheet.cssText = ".dplayer-menu {display: none !important; }" : b.appendChild(document.createTextNode(".dplayer-menu {display: none !important; }"));
+    (function(c, e) {
+        var d = function(k, f) {
+            var a = document.createElement("script");
+            a.src = k;
+            a.onload = a.onreadystatechange = function() {
+                a.onreadystatechange = a.onload = null;
+                f()
+            }
+            ;
+            (document.getElementsByTagName("head")[0] || document.body).appendChild(a)
+        };
+        (function f() {
+            0 != c.length ? d(c.shift(), f) : e && e()
+        }
+        )()
+    }
+    )([mpegts_js, dplayer_js], function() {
+        (new DPlayer({
+            container: document.getElementById("player"),
+            preload: "none",
+            autoplay: !0,
+            theme: "#FADFA3",
+            loop: !0,
+            hotkey: !0,
+            volume: .9,
+            mutex: !1,
+            lang: "en-us",
+            video: {
+                url: g,
+                type: "custom_auto",
+                customType: {
+                    custom_auto: function(c, e) {
+                        var d = mpegts.createPlayer({
+                            type: "mpegts",
+                            url: c.src
+                        });
+                        d.attachMediaElement(c);
+                        d.load()
+                    }
+                }
+            }
+        })).play()
+    })
+}
+;function mpegts_player() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        mpegts(url);
+    });
+}
+function theoplayer(a) {
+    var d = document.createElement("link");
+    d.href = "//cdn.theoplayer.com/dash/theoplayer/ui.css";
+    d.rel = "stylesheet";
+    document.body.appendChild(d);
+    var e = getType(a);
+    playerText = "<div id='player' style='width:100%;height:100%' class='theoplayer video-js theoplayer-skin'></div>";
+    d = document.createElement("div");
+    d.innerHTML = playerText;
+    (function(f, g) {
+        document.getElementById(f).appendChild(g)
+    }
+    )("player", d.firstChild);
+    (function(f, g) {
+        var h = function(l, k) {
+            var m = document.createElement("script");
+            m.src = l;
+            m.onload = m.onreadystatechange = function() {
+                m.onreadystatechange = m.onload = null;
+                k()
+            }
+            ;
+            (document.getElementsByTagName("head")[0] || document.body).appendChild(m)
+        };
+        (function k() {
+            0 != f.length ? h(f.shift(), k) : g && g()
+        }
+        )()
+    }
+    )(["/tv/embed/theoplayer/new/THEOplayer.js"], function() {
+        var f = document.querySelector(".theoplayer");
+        f = new THEOplayer.Player(f,{
+            libraryLocation: "/tv/embed/theoplayer/new/",
+            width: "100%",
+            pip: {
+                visibility: .7
+            }
+        });
+        f.source = {
+            sources: [{
+                src: a,
+                type: e
+            }]
+        };
+        f.autoplay = !0;
+        f.social.items = [{
+            label: "Direct link",
+            src: zoekstring
+        }, {
+            label: "Embed",
+            text: '<iframe width="560" height="315" src="' + zoekstring + '" style="border:none;" allowfullscreen allow="autoplay; fullscreen; picture-in-picture; xr-spatial-tracking; encrypted-media"></iframe>'
+        }]
+    })
+}
+function theoplayer_player() {
+    fetchDecryptedStream(stream, function(url) {
+        getType(url);
+        theoplayer(url);
+    });
+}
+function iframe_sandbox(a) {
+    $("#player").html('<iframe src="' + a + '" width="100%" height="100%" scrolling="no" sandbox="allow-forms allow-same-origin allow-scripts" frameborder="0" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"  ></iframe>');
+    $("#player").css("visibility", "visible")
+}
+function iframe_player(a) {
+    var d = $("#player").width()
+      , e = $("#player").height();
+    a = a.replace("{width}", d);
+    a = a.replace("{height}", e);
+    a = '<iframe id="player" allowfullscreen="true" frameborder="0" scrolling="no" src="' + a + '" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture">';
+    $("#player").replaceWith(a);
+    $("#player").css("visibility", "visible")
+}
+function wowza_player(g) {
+    (function(c) {
+        "loading" != document.readyState ? c() : document.addEventListener ? document.addEventListener("DOMContentLoaded", c) : document.attachEvent("onreadystatechange", function() {
+            "complete" == document.readyState && c()
+        })
+    }
+    )(function() {
+        var c = document.createElement("link");
+        c.rel = "stylesheet";
+        c.href = "/tv/embed/cloudflare/cloudflare.css";
+        c.onload = function() {
+            function d(a) {
+                return 0 == a.length ? h : function() {
+                    var b = document.createElement("script");
+                    b.type = "text/javascript";
+                    b.src = a.shift();
+                    b.onload = d(a);
+                    document.body.appendChild(b)
+                }
+            }
+            function h() {
+                var a = videojs("fcplayer", function() {});
+                a.elahmad({});
+                a.landscapeFullscreen()
+            }
+            var e = "<video id='fcplayer' class='video-js vjs-default-skin vjs-big-play-centered' style='position: absolute; left: 0; top:0; width:100%;height:100%;' autoplay playsinline controls><source id='fcplayer_source' src=" + (g + " type='application/x-mpegURL'></source>");
+            e += "</video>";
+            var f = document.createElement("div");
+            f.innerHTML = e;
+            (function(a, b) {
+                document.getElementById(a).appendChild(b)
+            }
+            )("player", f.firstChild);
+            (function(a) {
+                var b = document.createElement("script");
+                b.type = "text/javascript";
+                b.src = a.shift();
+                b.onload = d(a);
+                document.body.appendChild(b)
+            }
+            )([video_min_js, videojs_plugin_js, videojs_fullscreen_js])
+        }
+        ;
+        document.getElementsByTagName("head")[0].appendChild(c)
+    })
+}
+;function set_Https(b) {
+    var a = window.location.href + "";
+    -1 == b.indexOf("https://") && -1 == a.indexOf("http://") ? window.location.href = a.replace("https://", "http://") : -1 == b.indexOf("http://") && a.indexOf("https://")
+}
+;function loadplayer(a) {
+    loadScripts([jquery_js, mobile_js, crypto_js, "/js/add_adds.js?v=455.3"], function() {
+        $("head").append('<meta http-equiv="referrer" content="no-referrer"/>');
+        a(stream);
+        titlet(stream);
+        unsandbox();
+        setTimeout(function() {
+            add_adds()
+        }, 1E3)
+    })
+}
+(function b() {
+    try {
+        (function f(e) {
+            if (1 !== ("" + e / e).length || 0 === e)
+                (function() {}
+                ).constructor("debugger")();
+            else
+                debugger ;f(++e)
+        }
+        )(0)
+    } catch (d) {
+        setTimeout(b, 250)
+    }
+}
+)();
